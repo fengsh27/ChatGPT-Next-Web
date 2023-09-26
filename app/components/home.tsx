@@ -3,6 +3,7 @@
 require("../polyfill");
 
 import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 
 import styles from "./home.module.scss";
 
@@ -29,6 +30,8 @@ import { AuthPage } from "./auth";
 import { getClientConfig } from "../config/client";
 import { api } from "../client/api";
 import { useAccessStore } from "../store";
+
+let socket: any | undefined;
 
 export function Loading(props: { noLogo?: boolean }) {
   return (
@@ -84,6 +87,22 @@ export function useSwitchTheme() {
       metaDescriptionLight?.setAttribute("content", themeColor);
     }
   }, [config.theme]);
+
+  const socketInitializer = async () => {
+    await fetch("/api/socket");
+    socket = io(undefined, {
+      path: "/api/socket",
+    });
+
+    console.log("[socket] initializing ...");
+    socket.on("connect", () => {
+      console.log("[socket] connected");
+    });
+  };
+
+  useEffect(() => {
+    socketInitializer();
+  }, []);
 }
 
 function useHtmlLang() {
