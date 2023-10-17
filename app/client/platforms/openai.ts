@@ -70,11 +70,12 @@ export class ChatGPTApi implements LLMApi {
       presence_penalty: modelConfig.presence_penalty,
       frequency_penalty: modelConfig.frequency_penalty,
       top_p: modelConfig.top_p,
+      session_id: useChatStore.getState().currentSession().id,
     };
 
     console.log("[Request] openai payload: ", requestPayload);
 
-    const shouldStream = !!options.config.stream;
+    const shouldStream = false; //  !!options.config.stream; //
     const controller = new AbortController();
     options.onController?.(controller);
 

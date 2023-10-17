@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
+import { v4 as uuidv4 } from "uuid";
 import { trimTopic } from "../utils";
 
 import Locale, { getLang } from "../locales";
@@ -19,6 +19,8 @@ import { prettyObject } from "../utils/format";
 import { estimateTokenLength } from "../utils/token";
 import { nanoid } from "nanoid";
 import { createPersistStore } from "../utils/store";
+
+const generateUniqId = () => uuidv4();
 
 export type ChatMessage = RequestMessage & {
   date: string;
@@ -66,7 +68,7 @@ export const BOT_HELLO: ChatMessage = createMessage({
 
 function createEmptySession(): ChatSession {
   return {
-    id: nanoid(),
+    id: generateUniqId(),
     topic: DEFAULT_TOPIC,
     memoryPrompt: "",
     messages: [],
@@ -574,7 +576,7 @@ export const useChatStore = createPersistStore(
             ),
             config: {
               ...modelConfig,
-              stream: true,
+              stream: false,
               model: getSummarizeModel(session.mask.modelConfig.model),
             },
             onUpdate(message) {
@@ -640,7 +642,7 @@ export const useChatStore = createPersistStore(
       if (version < 3) {
         // migrate id to nanoid
         newState.sessions.forEach((s) => {
-          s.id = nanoid();
+          s.id = generateUniqId();
           s.messages.forEach((m) => (m.id = nanoid()));
         });
       }
