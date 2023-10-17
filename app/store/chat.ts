@@ -576,7 +576,7 @@ export const useChatStore = createPersistStore(
             ),
             config: {
               ...modelConfig,
-              stream: true,
+              stream: false,
               model: getSummarizeModel(session.mask.modelConfig.model),
             },
             onUpdate(message) {
