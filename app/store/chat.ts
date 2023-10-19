@@ -433,6 +433,9 @@ export const useChatStore = createPersistStore(
         const longTermMemoryPrompts = shouldSendLongTermMemory
           ? [get().getMemoryPrompt()]
           : [];
+        console.log(
+          `[fengsh] shouldSendLongTermMemory: ${shouldSendLongTermMemory}`,
+        );
         const longTermMemoryStartIndex = session.lastSummarizeIndex;
 
         // short term memory
