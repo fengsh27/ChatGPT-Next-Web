@@ -1,4 +1,4 @@
-version: '3.9'
+version: "3.9"
 services:
   chatgse:
     build:
@@ -16,13 +16,15 @@ services:
       - BASE_URL=http://flask-app:5000
 
   flask-app:
-    image: frankfeng78/bioserver:0.4.0
+    image: frankfeng78/bioserver:0.4.1
     env_file:
       - .bioserver.env
     ports:
       - 5000:5000
     networks:
       - biochat
+    volumes:
+      - ./logs:/app/logs
 
 networks:
   biochat:
