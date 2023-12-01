@@ -16,7 +16,9 @@ services:
       - BASE_URL=http://flask-app:5000
 
   flask-app:
-    image: frankfeng78/bioserver:0.4.1
+    build:
+      context: ./biochatter-server/
+      dockerfile: Dockerfile
     env_file:
       - .bioserver.env
     ports:
